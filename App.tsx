@@ -60,6 +60,9 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [activeSegment, setActiveSegment] = useState<RefinementSegment | null>(null);
 
+  // Check if API Key is present
+  const hasApiKey = !!process.env.API_KEY;
+
   const handleRefine = async () => {
     if (files.length === 0 || !inputText.trim()) return;
 
@@ -94,6 +97,25 @@ export default function App() {
       </header>
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        {!hasApiKey && (
+          <div className="mb-8 bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg shadow-sm">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <AlertCircle className="h-5 w-5 text-amber-400" aria-hidden="true" />
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-amber-800">API Key Missing</h3>
+                <div className="mt-2 text-sm text-amber-700">
+                  <p>
+                    The application cannot function without the Google Gemini API Key. 
+                    Please add <code>API_KEY</code> to your Vercel Project Settings under "Environment Variables" and redeploy.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
           
           {/* Left Column: Inputs */}
@@ -137,7 +159,7 @@ export default function App() {
               <div className="pt-2">
                 <Button 
                   onClick={handleRefine} 
-                  disabled={files.length === 0 || !inputText.trim()} 
+                  disabled={files.length === 0 || !inputText.trim() || !hasApiKey} 
                   isLoading={isProcessing}
                   className="w-full text-lg py-6 shadow-md shadow-brand-500/20"
                 >
