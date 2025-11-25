@@ -1,0 +1,5 @@
+{
+  "name": "ScholarRefine",
+  "description": "An intelligent academic writing assistant that modifies draft sentences based on uploaded reference papers, providing precise citations and source comparisons.",
+  "requestFramePermissions": []
+}
